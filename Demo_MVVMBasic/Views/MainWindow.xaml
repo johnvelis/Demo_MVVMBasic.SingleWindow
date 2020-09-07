@@ -185,11 +185,6 @@
                             Grid.Column="1"
                             Orientation="Vertical">
                             <Button 
-                                Content="Add" 
-                                Style="{StaticResource ButtonStyleSmall}"
-                                Command="{Binding ButtonAddCommand}" 
-                                CommandParameter="{Binding Text, ElementName=Quantity}" />
-                            <Button 
                                 Content="Edit" 
                                 Style="{StaticResource ButtonStyleSmall}"
                                 Command="{Binding ButtonEditCommand}" 
