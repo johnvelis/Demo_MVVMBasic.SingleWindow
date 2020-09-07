@@ -24,6 +24,15 @@ namespace Demo_MVVMBasic
         public ICommand ButtonQuitCommand { get; set; }
 
         private Widget _selectedWidget;
+        private Widget _widgetToAdd;
+        private Widget _widgetToEdit;
+        private string _addWidgetFeedback;
+        private string _edidWidgetFeedback;
+
+
+
+
+
 
         public ObservableCollection<Widget> Widgets { get; set; }
 
@@ -34,6 +43,46 @@ namespace Demo_MVVMBasic
             {
                 _selectedWidget = value;
                 OnPropertyChanged(nameof(SelectedWidget));
+            }
+        }
+
+        public Widget WidgetToAdd
+        {
+            get { return _widgetToAdd; }
+            set
+            {
+                _widgetToAdd = value;
+                OnPropertyChanged(nameof(WidgetToAdd));
+            }
+        }
+
+        public Widget WidgetToEdit
+        {
+            get { return _widgetToEdit; }
+            set
+            {
+                _widgetToEdit = value;
+                OnPropertyChanged(nameof(WidgetToEdit));
+            }
+        }
+
+        public string AddWidgetFeedback
+        {
+            get { return _addWidgetFeedback; }
+            set
+            {
+                _addWidgetFeedback = value;
+                OnPropertyChanged(nameof(AddWidgetFeedback));
+            }
+        }
+
+        public string EditWidgetFeedback
+        {
+            get { return _edidWidgetFeedback; }
+            set
+            {
+                _edidWidgetFeedback = value;
+                OnPropertyChanged(nameof(EditWidgetFeedback));
             }
         }
 
@@ -50,6 +99,9 @@ namespace Demo_MVVMBasic
             ButtonEditCommand = new RelayCommand(new Action<object>(EditWidget));
             ButtonDeleteCommand = new RelayCommand(new Action<object>(DeleteWidget));
             ButtonQuitCommand = new RelayCommand(new Action<object>(QuitWidget));
+
+            WidgetToAdd = new Widget();
+
         }
 
         public void SellWidgets(object parameter)
@@ -67,24 +119,31 @@ namespace Demo_MVVMBasic
         public void AddWidget(object parameter)
         {
             //
-            // create WidgetOperation object to pass
-            // open add window
+            // TODO - add code to validate user input
             //
-            WidgetOperation widgetOperation = new WidgetOperation()
-            {
-                Status = WidgetOperation.OperationStatus.CANCEL,
-                Widget = new Widget()
-            };
-            Window addWdigetWindow = new AddWindow(widgetOperation);
-            addWdigetWindow.ShowDialog();
 
-            //
-            // TODO consider refactoring and use a class with the Widget object and status
-            //
-            if (widgetOperation.Status != WidgetOperation.OperationStatus.CANCEL)
+            string commandParameter = parameter.ToString();
+
+            if (commandParameter == "SAVE")
             {
-                Widgets.Add(widgetOperation.Widget);
+                if (WidgetToAdd != null)
+                {
+                    Widgets.Add(WidgetToAdd);
+                    AddWidgetFeedback = "New Widget Added";
+                }
+                WidgetToAdd = new Widget();
             }
+            else if (commandParameter == "CANCEL")
+            {
+                WidgetToAdd = new Widget();
+            }
+            else
+            {
+                WidgetToAdd = new Widget();
+                throw new ArgumentException($"{commandParameter} is not a valid command parameter for the adding widgets.");
+            }
+
+
         }
 
         public void EditWidget(object parameter)

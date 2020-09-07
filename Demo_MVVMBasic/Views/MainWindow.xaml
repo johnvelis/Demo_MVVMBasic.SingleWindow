@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:Demo_MVVMBasic"
         Title="Demo MVVM Basic" 
         Height="600" 
-        Width="600">
+        Width="700">
     <Window.Resources>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="Margin" Value="5"/>
@@ -37,6 +37,12 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        <Style x:Key="FeedbackLabelStyle" TargetType="Label">
+            <Setter Property="Width" Value="150"></Setter>
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
         <Style x:Key="DetailTextBoxStyle" TargetType="TextBox">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="20"/>
@@ -44,6 +50,14 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Foreground" Value="DarkGoldenrod"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style x:Key="DetailStackPanelStyle" TargetType="StackPanel">
             <Setter Property="Margin" Value="10,0,0,0"/>
@@ -81,7 +95,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
+
     <!--
     setting the DataContext instantiates the view model and
     provides intellisense help in the view
@@ -113,198 +127,200 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-            
-            
-            <!--
+
+
+                <!--
                 Widget Management Section                
              -->
-            <Border 
+                <Border 
                 Grid.Row="0"
                 Grid.Column="0"
                 Style="{StaticResource BorderStyle}">
-                <StackPanel
+                    <StackPanel
                     Orientation="Vertical">
-                    <Label
+                        <Label
                         Content="Widget Management"
                         Style="{StaticResource SubHeaderStyle}"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="175"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="175"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
                             Grid.Column="0"
                             Orientation="Vertical">
-                            <ComboBox
+                                <ComboBox
                             Style="{StaticResource DetailComboBoxStyle}"
                             ItemsSource="{Binding Path=Widgets}"
                             SelectedItem="{Binding Path=SelectedWidget}"
-                            DisplayMemberPath="Name"/>                           
-                            <StackPanel
+                            DisplayMemberPath="Name"/>
+                                <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                                <Label
+                                    <Label
                                     Content="Name"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                                <TextBox
+                                    <TextBox
                                     Text="{Binding SelectedWidget.Name}"
                                     Style="{StaticResource DetailTextBoxStyle}"/>
-                            </StackPanel>
-                            <StackPanel
+                                </StackPanel>
+                                <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                                <Label
+                                    <Label
                                     Content="Color"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                                <TextBox
+                                    <TextBox
                                     Text="{Binding SelectedWidget.Color}"
                                     Style="{StaticResource DetailTextBoxStyle}"/>
-                            </StackPanel>
-                            <StackPanel
+                                </StackPanel>
+                                <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                                <Label
+                                    <Label
                                     Content="Price"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                                <TextBox
+                                    <TextBox
                                     Text="{Binding SelectedWidget.UnitPrice, StringFormat={}{0:C}}"
                                     Style="{StaticResource DetailTextBoxStyle}"/>
-                            </StackPanel>
-                            <StackPanel
+                                </StackPanel>
+                                <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                                <Label
+                                    <Label
                                     Content="Inventory"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                                <TextBox
+                                    <TextBox
                                     Text="{Binding SelectedWidget.CurrentInventory}"
                                     Style="{StaticResource DetailTextBoxStyle}"/>
-                            </StackPanel>                            
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Column="1"
-                            Orientation="Vertical">
-                            <Button 
-                                Content="Edit" 
-                                Style="{StaticResource ButtonStyleSmall}"
-                                Command="{Binding ButtonEditCommand}" 
-                                CommandParameter="{Binding Text, ElementName=Quantity}" />
-                            <Button 
-                                Content="Delete" 
-                                Style="{StaticResource ButtonStyleSmall}"
-                                Command="{Binding ButtonDeleteCommand}" 
-                                CommandParameter="{Binding Text, ElementName=Quantity}" />
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
-            <!--
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Column="1"
+                                Orientation="Vertical">
+                                    <Button 
+                                    Content="Edit" 
+                                    Style="{StaticResource ButtonStyleSmall}"
+                                    Command="{Binding ButtonEditCommand}" 
+                                    CommandParameter="{Binding Text, ElementName=Quantity}" />
+                                    <Button 
+                                    Content="Delete" 
+                                    Style="{StaticResource ButtonStyleSmall}"
+                                    Command="{Binding ButtonDeleteCommand}" 
+                                    CommandParameter="{Binding Text, ElementName=Quantity}" />
+                            </StackPanel>
+                        </Grid>
+                        <Label
+                            Content="{Binding AddWidgetFeedback}"
+                            Style="{StaticResource FeedbackLabelStyle}"/>
+                    </StackPanel>
+                </Border>
+                <!--
                 Widget Transaction Section                
              -->
-            <Border 
+                <Border 
                 Grid.Row="1"
                 Grid.Column="0"
                 Style="{StaticResource BorderStyle}">
-                <StackPanel
+                    <StackPanel
                     Orientation="Vertical">
-                    <Label
+                        <Label
                         Content="Widget Transactions"
                         Style="{StaticResource SubHeaderStyle}"/>
-                    <StackPanel
+                        <StackPanel
                         Orientation="Horizontal">
-                        <Label
+                            <Label
                             Content="Quantity"
                             Style="{StaticResource DetailLabelStyle}"/>
-                        <TextBox x:Name="Quantity" 
+                            <TextBox x:Name="Quantity" 
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Text="55"                    
                             Height="25"
                             Width="25"/>
-                        <Button 
+                            <Button 
                             Content="Sell" 
                             Style="{StaticResource ButtonStyleSmall}"
                             Command="{Binding ButtonSellCommand}" 
-                            CommandParameter="{Binding Text, ElementName=Quantity}" />  
-                        <Button 
+                            CommandParameter="{Binding Text, ElementName=Quantity}" />
+                            <Button 
                             Content="Buy" 
                             Style="{StaticResource ButtonStyleSmall}"
                             Command="{Binding ButtonBuyCommand}" 
                             CommandParameter="{Binding Text, ElementName=Quantity}" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border 
+                <Border 
                 Grid.Row="0"
                 Grid.Column="1"
                 Style="{StaticResource BorderStyle}">
-                <StackPanel
+                    <StackPanel
                     Orientation="Vertical" Height="188" Margin="0.4,0,0,-0.4" VerticalAlignment="Bottom">
-                    <Label
+                        <Label
                         Content="Edit Widget"
                         Style="{StaticResource SubHeaderStyle}"/>
 
-                    <StackPanel
+                        <StackPanel
                             Grid.Column="0"
                             Orientation="Vertical">
-                        <StackPanel
+                            <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                            <Label
+                                <Label
                                     Content="Name"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                            <TextBox
-                                    Text="{Binding UserWidget.Name}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
-                        </StackPanel>
-                        <StackPanel
+                                <TextBox
+                                    Text="{Binding WidgetToAdd.Name}"
+                                    Style="{StaticResource InputTextBoxStyle}"/>
+                            </StackPanel>
+                            <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                            <Label
+                                <Label
                                     Content="Color"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                            <TextBox
-                                    Text="{Binding UserWidget.Color}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
-                        </StackPanel>
-                        <StackPanel
+                                <TextBox
+                                    Text="{Binding WidgetToAdd.Color}"
+                                    Style="{StaticResource InputTextBoxStyle}"/>
+                            </StackPanel>
+                            <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                            <Label
+                                <Label
                                     Content="Price"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                            <TextBox
-                                    Text="{Binding UserWidget.UnitPrice}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
-                        </StackPanel>
-                        <StackPanel
+                                <TextBox
+                                    Text="{Binding WidgetToAdd.UnitPrice}"
+                                    Style="{StaticResource InputTextBoxStyle}"/>
+                            </StackPanel>
+                            <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
-                            <Label
+                                <Label
                                     Content="Inventory"
                                     Style="{StaticResource DetailLabelStyle}"
                                 />
-                            <TextBox
-                                    Text="{Binding UserWidget.CurrentInventory}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
+                                <TextBox
+                                    Text="{Binding WidgetToAdd.CurrentInventory}"
+                                    Style="{StaticResource InputTextBoxStyle}"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel
+                        <StackPanel
                         Orientation="Horizontal">
-                        <Button 
+                            <Button 
                             Content="Save" 
                             Style="{StaticResource ButtonStyleSmall}"
-                            Command="{Binding ButtonSaveCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
-                        <Button 
+                            Command="{Binding ButtonAddCommand}"
+                            CommandParameter="SAVE"/>
+                            <Button 
                             Content="Cancel" 
                             Style="{StaticResource ButtonStyleSmall}"
-                            Command="{Binding ButtonCancelCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
+                            Command="{Binding ButtonAddCommand}"
+                            CommandParameter="CANCEL"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-
-            </Border>
+                </Border>
 
                 <Border 
                 Grid.Row="1"
@@ -327,7 +343,7 @@
                                 />
                                 <TextBox
                                     Text="{Binding UserWidget.Name}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
+                                    Style="{StaticResource InputTextBoxStyle}"/>
                             </StackPanel>
                             <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
@@ -337,7 +353,7 @@
                                 />
                                 <TextBox
                                     Text="{Binding UserWidget.Color}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
+                                    Style="{StaticResource InputTextBoxStyle}"/>
                             </StackPanel>
                             <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
@@ -347,7 +363,7 @@
                                 />
                                 <TextBox
                                     Text="{Binding UserWidget.UnitPrice}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
+                                    Style="{StaticResource InputTextBoxStyle}"/>
                             </StackPanel>
                             <StackPanel
                                 Style="{StaticResource DetailStackPanelStyle}">
@@ -357,7 +373,7 @@
                                 />
                                 <TextBox
                                     Text="{Binding UserWidget.CurrentInventory}"
-                                    Style="{StaticResource DetailTextBoxStyle}"/>
+                                    Style="{StaticResource InputTextBoxStyle}"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel
@@ -377,6 +393,6 @@
 
                 </Border>
             </Grid>
-        </StackPanel>        
+        </StackPanel>
     </Grid>
 </Window>
