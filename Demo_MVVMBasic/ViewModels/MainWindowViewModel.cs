@@ -101,7 +101,6 @@ namespace Demo_MVVMBasic
             ButtonQuitCommand = new RelayCommand(new Action<object>(QuitWidget));
 
             WidgetToAdd = new Widget();
-
         }
 
         public void SellWidgets(object parameter)
@@ -130,45 +129,53 @@ namespace Demo_MVVMBasic
                 {
                     Widgets.Add(WidgetToAdd);
                     AddWidgetFeedback = "New Widget Added";
+                    SelectedWidget = WidgetToAdd;
                 }
-                WidgetToAdd = new Widget();
             }
             else if (commandParameter == "CANCEL")
             {
-                WidgetToAdd = new Widget();
+                AddWidgetFeedback = "New Widget Canceled";
             }
             else
             {
-                WidgetToAdd = new Widget();
                 throw new ArgumentException($"{commandParameter} is not a valid command parameter for the adding widgets.");
             }
-
+            WidgetToAdd = new Widget();
 
         }
 
         public void EditWidget(object parameter)
         {
             //
-            // create WidgetOperation object to pass with the current SelectedWidget object
-            // open add window
+            // TODO - add code to validate user input
             //
-            WidgetOperation widgetOperation = new WidgetOperation()
-            {
-                Status = WidgetOperation.OperationStatus.CANCEL,
-                Widget = SelectedWidget
-            };
-            Window editWidgetWindow = new EditWindow(widgetOperation);
-            editWidgetWindow.ShowDialog();
 
-            //
-            // TODO consider refactoring and use a class with the Widget object and status
-            //
-            if (widgetOperation.Status != WidgetOperation.OperationStatus.CANCEL)
+            string commandParameter = parameter.ToString();
+            if (commandParameter == "LOADWIDGET")
             {
-                Widgets.Remove(SelectedWidget);
-                Widgets.Add(widgetOperation.Widget);
-                SelectedWidget = widgetOperation.Widget;
+                //
+                // Copy method uses makes a Shallow Copy
+                //
+                WidgetToEdit = SelectedWidget.Copy();
             }
+            else if (commandParameter == "SAVE")
+            {
+                if (WidgetToAdd != null)
+                {
+                    Widgets.Remove(SelectedWidget);
+                    Widgets.Add(WidgetToEdit);
+                    AddWidgetFeedback = "Widget Updated";
+                }
+            }
+            else if (commandParameter == "CANCEL")
+            {
+                AddWidgetFeedback = "Widget Update Canceled";
+            }
+            else
+            {
+                throw new ArgumentException($"{commandParameter} is not a valid command parameter for the adding widgets.");
+            }
+            WidgetToEdit = new Widget();
         }
 
         public void DeleteWidget(object parameter)

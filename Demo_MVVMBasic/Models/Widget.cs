@@ -24,6 +24,13 @@ namespace Demo_MVVMBasic.Models
             }
         }
 
-
+        /// <summary>
+        /// makes a Shallow Copy of the Widget object
+        /// </summary>
+        /// <returns>Shallow Copy of the Widget object</returns>
+        public Widget Copy()
+        {
+            return (Widget)this.MemberwiseClone();
+        }
     }
 }
